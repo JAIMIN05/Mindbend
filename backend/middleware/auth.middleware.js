@@ -4,9 +4,18 @@ require('dotenv').config();
 
 exports.protect = async (req, res, next) => {
   try {
-    // Get token from cookies
-    const token = req.cookies.jwt_token;
+    let token;
     
+    // Check for token in cookies
+    if (req.cookies && req.cookies.jwt_token) {
+      token = req.cookies.jwt_token;
+    }
+    
+    // If no cookie token, check Authorization header
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+
     if (!token) {
       return responseFormatter(res, 401, false, "Not authorized, no token");
     }
