@@ -27,19 +27,11 @@ CareCrew provides a modern, user-friendly platform that:
 3. **Real-time Tracking**
    - Live location tracking of service providers
    - Accurate ETA updates
-   - In-app communication system
 
 4. **User Dashboard**
    - Service history
-   - Saved payment methods
    - Emergency contacts
    - Vehicle information management
-
-5. **Provider Dashboard**
-   - Job management system
-   - Earnings tracking
-   - Service area management
-   - Availability controls
 
 ## Overview
 CareCrew is a full-stack web application built with modern technologies, featuring a robust backend API and a responsive frontend interface.
@@ -53,10 +45,6 @@ CareCrew is a full-stack web application built with modern technologies, featuri
 - **Authentication:** JWT (JSON Web Tokens), bcrypt for password hashing
 - **Email Service:** Nodemailer
 - **Other Key Dependencies:**
-  - cors: For handling Cross-Origin Resource Sharing
-  - dotenv: For environment variable management
-  - morgan: For HTTP request logging
-  - axios: For HTTP requests
   - groq-sdk: For AI/ML integration
 
 ### Frontend
