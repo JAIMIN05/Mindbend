@@ -19,11 +19,12 @@ const generateToken = (user, role) => {
 
 // Cookie configuration
 const cookieConfig = {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: 'none',
     path: '/',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000,
+    domain: '.vercel.app'
 };
 
 // Register a new user
