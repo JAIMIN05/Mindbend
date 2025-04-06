@@ -50,20 +50,11 @@ CareCrew is a full-stack web application built with modern technologies, featuri
 ### Frontend
 - **Framework:** React with TypeScript
 - **Build Tool:** Vite
-- **UI Components:** 
-  - Radix UI (Accessible component primitives)
-  - Shadcn UI components
 - **Styling:** 
   - TailwindCSS
   - CSS Animations
-- **State Management & Data Fetching:**
-  - React Query (TanStack Query)
-  - React Hook Form
-- **Routing:** React Router DOM
-- **Data Visualization:** Recharts
-- **Maps Integration:** Mapbox GL
-- **Toast Notifications:** react-hot-toast, sonner
-
+- **Maps Integration:** Mapbox
+- 
 ## Features
 - User Authentication and Authorization
 - Responsive Design
