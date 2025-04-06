@@ -43,4 +43,31 @@ api.interceptors.response.use(
   }
 );
 
-export default api; 
+export default api;
+
+const handleLogin = async (credentials) => {
+  try {
+    const response = await api.post('/auth/login', credentials);
+    const { token, user } = response.data.user;
+    
+    // Store token and user data
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    
+    // Rest of your login logic
+  } catch (error) {
+    console.error('Login error:', error);
+    throw error;
+  }
+};
+
+// Use the api instance for all requests
+const fetchRequests = async () => {
+  try {
+    const response = await api.get('/request/my-requests');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching requests:', error);
+    throw error;
+  }
+}; 
