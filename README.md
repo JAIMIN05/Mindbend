@@ -1,7 +1,7 @@
-# CareCrew - Roadside Assistance & Emergency Provider
+# CareCrew - Roadside Assistance & Emergency Support
 
 ## Project Description
-CareCrew is a comprehensive roadside assistance and emergency provider platform designed to connect stranded motorists with nearby assistance providers in real-time. The platform aims to revolutionize the way people receive help during vehicle-related emergencies.
+CareCrew is a comprehensive roadside assistance and emergency support platform designed to connect stranded motorists with nearby assistance providers in real-time. The platform aims to revolutionize the way people receive help during vehicle-related emergencies.
 
 ### Problem Statement
 Every day, countless motorists face unexpected vehicle breakdowns, accidents, or emergencies on the road. Traditional roadside assistance services often involve long wait times, unclear arrival estimates, and limited service provider options. This creates stress and uncertainty for people already in vulnerable situations.
