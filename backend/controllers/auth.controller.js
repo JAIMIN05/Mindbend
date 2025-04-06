@@ -7,25 +7,12 @@ const Admin = require("../models/admin.model");
 require("dotenv").config();
 
 // Generate JWT token
-const generateToken = (user, role) => {
+const generateToken = (user) => {
     const secret = process.env.JWT_SECRET || "fallback_secret_key_for_development";
-    return jwt.sign({ 
-      id: user._id,
-      role: role || "user"
-    }, secret, {
-      expiresIn: '24h'
+    return jwt.sign({ id: user._id }, secret, {
+      // expiresIn: process.env.JWT_EXPIRES_IN,
     });
-};
-
-// Cookie configuration
-const cookieConfig = {
-    httpOnly: false,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
-    maxAge: 24 * 60 * 60 * 1000,
-    domain: '.vercel.app'
-};
+  };
 
 // Register a new user
 exports.register = async (req, res) => {
@@ -48,16 +35,20 @@ exports.register = async (req, res) => {
       location,
       latlon,
       guardian_emails: guardian_emails || [],
-      other_contact: other_contact || [],
+      other_contact: other_contact || [], // Ensure this field is populated
     });
 
     await user.save();
 
-    // Generate token with role
-    const token = generateToken(user, "user");
+    // Generate token
+    const token = generateToken(user);
 
     // Set token in cookie
-    res.cookie('jwt_token', token, cookieConfig);
+    res.cookie('jwt_signup', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure in production
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
 
     return responseFormatter(res, 201, true, "User registered successfully", {
       user: {
@@ -65,7 +56,6 @@ exports.register = async (req, res) => {
         email: user.email,
         name: user.name,
         role: "user",
-        token: token // Send token in response as well
       },
     });
   } catch (err) {
@@ -98,10 +88,12 @@ exports.login = async (req, res) => {
     // If not found in User, check in ServiceProvider
     if (!user) {
       user = await ServiceProvider.findOne({ "contact.email": email });
+      console.log(user);
       if (user) {
         role = 'service_provider';
       }
     }
+    console.log(user);
     
     // If not found in ServiceProvider, check in Admin
     if (!user) {
@@ -121,11 +113,15 @@ exports.login = async (req, res) => {
       return responseFormatter(res, 400, false, "Invalid email or password");
     }
 
-    // Generate token with role
-    const token = generateToken(user, role);
+    // Generate token
+    const token = jwt.sign({ id: user._id, role: role }, process.env.JWT_SECRET);
 
     // Set token in cookie
-    res.cookie('jwt_token', token, cookieConfig);
+    res.cookie('jwt_login', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure in production
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
 
     // Format user data based on role
     let userData;
@@ -138,8 +134,7 @@ exports.login = async (req, res) => {
         mobile: user.mobile,
         location: user.location,
         other_contact: user.other_contact,
-        latlon: user.latlon,
-        token: token // Send token in response
+        latlon: user.latlon
       };
     } else if (role === 'service_provider') {
       userData = {
@@ -152,16 +147,14 @@ exports.login = async (req, res) => {
         type: user.type,
         rating: user.rating,
         service_count: user.service_count,
-        latlon: user.latlon,
-        token: token // Send token in response
+        latlon: user.latlon
       };
     } else {
       userData = {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: role,
-        token: token // Send token in response
+        role: role
       };
     }
 
@@ -184,8 +177,8 @@ exports.login = async (req, res) => {
 // Logout user
 exports.logout = async (req, res) => {
   try {
-    res.cookie('jwt_token', '', {
-      ...cookieConfig,
+    res.cookie('jwt', '', {
+      httpOnly: true,
       expires: new Date(0)
     });
     
