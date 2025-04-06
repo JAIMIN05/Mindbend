@@ -14,6 +14,15 @@ const generateToken = (user) => {
     });
   };
 
+// Cookie options for cross-domain
+const getCookieOptions = () => ({
+  httpOnly: true,
+  secure: true, // Always use secure in production
+  sameSite: 'none', // Required for cross-domain
+  maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  path: '/'
+});
+
 // Register a new user
 exports.register = async (req, res) => {
   try {
@@ -44,11 +53,7 @@ exports.register = async (req, res) => {
     const token = generateToken(user);
 
     // Set token in cookie
-    res.cookie('jwt_signup', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure in production
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    });
+    res.cookie('jwt_token', token, getCookieOptions());
 
     return responseFormatter(res, 201, true, "User registered successfully", {
       user: {
@@ -88,12 +93,10 @@ exports.login = async (req, res) => {
     // If not found in User, check in ServiceProvider
     if (!user) {
       user = await ServiceProvider.findOne({ "contact.email": email });
-      console.log(user);
       if (user) {
         role = 'service_provider';
       }
     }
-    console.log(user);
     
     // If not found in ServiceProvider, check in Admin
     if (!user) {
@@ -117,11 +120,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user._id, role: role }, process.env.JWT_SECRET);
 
     // Set token in cookie
-    res.cookie('jwt_login', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure in production
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    });
+    res.cookie('jwt_token', token, getCookieOptions());
 
     // Format user data based on role
     let userData;
@@ -177,8 +176,8 @@ exports.login = async (req, res) => {
 // Logout user
 exports.logout = async (req, res) => {
   try {
-    res.cookie('jwt', '', {
-      httpOnly: true,
+    res.cookie('jwt_token', '', {
+      ...getCookieOptions(),
       expires: new Date(0)
     });
     
