@@ -7,7 +7,7 @@ CareCrew is a comprehensive roadside assistance and emergency provider platform 
 Every day, countless motorists face unexpected vehicle breakdowns, accidents, or emergencies on the road. Traditional roadside assistance services often involve long wait times, unclear arrival estimates, and limited service provider options. This creates stress and uncertainty for people already in vulnerable situations.
 
 ### Our Solution
-Mindbend provides a modern, user-friendly platform that:
+CareCrew provides a modern, user-friendly platform that:
 - Connects users with nearby service providers in real-time
 - Offers transparent pricing and ETA information
 - Provides live tracking of service providers
