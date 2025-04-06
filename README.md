@@ -23,7 +23,6 @@ CareCrew provides a modern, user-friendly platform that:
 2. **Service Provider Network**
    - Verified professional service providers
    - Specialized service categories (towing, tire change, fuel delivery, etc.)
-   - Rating and review system
 
 3. **Real-time Tracking**
    - Live location tracking of service providers
