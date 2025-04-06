@@ -52,9 +52,8 @@ CareCrew is a full-stack web application built with modern technologies, featuri
 - **Build Tool:** Vite
 - **Styling:** 
   - TailwindCSS
-  - CSS Animations
 - **Maps Integration:** Mapbox
-- 
+
 ## Features
 - User Authentication and Authorization
 - Responsive Design
